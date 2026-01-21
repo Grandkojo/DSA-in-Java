@@ -76,11 +76,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ParkingSpaceAllocation {
     public static int totalCarsParked = 0;
     public static int totalWastedSpace = 0;
-    public static List<String> assignments = new ArrayList<>();
+    public static List<String> assignedParkingSlots = new ArrayList<>();
+    public static Map<String, String> assignments = new TreeMap<>();
 
     public static void parkingSpaceAllocation(String totalNumbers, Map<String, Integer> parkingSlots, Map<String, Integer> cars){
         String[] separatedTotalNumbers = totalNumbers.split(" ");
@@ -102,8 +104,12 @@ public class ParkingSpaceAllocation {
                 //if slot is bigger than car but bigger than the current slot bigger than the car, used the smaller
                 if (parkingSlot.getValue() >= car.getValue()){
                     if (!(currentSmallestFitLength >= car.getValue() && parkingSlot.getValue() > currentSmallestFitLength)){
-                        currentParkingSlot = parkingSlot.getKey();
-                        currentSmallestFitLength = parkingSlot.getValue();
+                        //if the parking slot has not been assigned already
+                        if (!assignedParkingSlots.contains(parkingSlot.getKey())){
+                            assignedParkingSlots.add(parkingSlot.getKey());
+                            currentParkingSlot = parkingSlot.getKey();
+                            currentSmallestFitLength = parkingSlot.getValue();
+                        }
                     } 
                     
                 }
@@ -113,7 +119,8 @@ public class ParkingSpaceAllocation {
             if (!currentParkingSlot.isEmpty()){
                 totalCarsParked++;
                 totalWastedSpace += currentSmallestFitLength - car.getValue();
-                assignments.add(car.getKey() + "->" + currentParkingSlot);
+                assignments.put(car.getKey(), currentParkingSlot);
+                // assignments.add(car.getKey() + "->" + currentParkingSlot);
             } 
             
             // System.out.println("Right slot: " + currentParkingSlot);
@@ -121,26 +128,38 @@ public class ParkingSpaceAllocation {
         }
         System.out.println(totalCarsParked + " vehicles parked ");
         System.out.println("Total Wasted Space: "+ totalWastedSpace + " feet");
-        System.out.println("Assignments: " + assignments.toString());
+        System.out.print("Assignments: [ ");
+        assignments.forEach((key, value) -> System.out.print(key + " -> " + value + " "));
+        System.out.print("]");
+
     }       
 
     public static void main(String[] args) {
      
         Map<String, Integer> parkingSlots = new HashMap<>();
-        parkingSlots.put("A1", 20);    
-        parkingSlots.put("A2", 25);    
-        parkingSlots.put("A3", 18);    
-        parkingSlots.put("B1", 30);    
-        parkingSlots.put("B2", 22);    
+        // parkingSlots.put("A1", 20);    
+        // parkingSlots.put("A2", 25);    
+        // parkingSlots.put("A3", 18);    
+        // parkingSlots.put("B1", 30);    
+        // parkingSlots.put("B2", 22);    
+
+        parkingSlots.put("P1", 15);    
+        parkingSlots.put("P2", 20);    
+        parkingSlots.put("P3", 25); 
         
         Map<String, Integer> cars = new HashMap<>();
-        cars.put("CAR1", 18);
-        cars.put("CAR2", 24);
-        cars.put("SUV1", 16);
-        cars.put("TRUCK", 30);
-        cars.put("VAN", 21);
+        // cars.put("CAR1", 18);
+        // cars.put("CAR2", 24);
+        // cars.put("SUV1", 16);
+        // cars.put("TRUCK", 30);
+        // cars.put("VAN", 21);
+
+        cars.put("V1", 22);
+        cars.put("V2", 18);
+        cars.put("V3", 14);
+        cars.put("V4", 12);
         
-        String totalNumbers = "5 5";
+        String totalNumbers = "3 4";
 
         parkingSpaceAllocation(totalNumbers, parkingSlots, cars);
     }

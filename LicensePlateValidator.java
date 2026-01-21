@@ -58,7 +58,7 @@ public class LicensePlateValidator {
             String regionCode = numberPlate.substring(0, 2);
             String firstSeparator = numberPlate.substring(2,3);
             String restOfCharacters = new String();
-            if ((!regionCode.matches("[A-Za-z]{2}")) && ("-_ ".indexOf(firstSeparator) >= 0) ){
+            if ((!regionCode.matches("[A-Z]{2}")) && ("-_ ".indexOf(firstSeparator) >= 0) ){
                 reasons.add("Invalid Region Code");
                 System.out.println("Plate " + numberPlate + ": Invalid  Region Code");
                 continue;
