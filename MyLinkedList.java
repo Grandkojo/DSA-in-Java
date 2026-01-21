@@ -5,6 +5,7 @@ class Node {
 
 class LinkedList{
     Node head;
+    Node tail;
     int size;
     public void insert(int data){
         Node node = new Node();
@@ -19,6 +20,7 @@ class LinkedList{
                 n = n.next;
             }
             n.next = node;
+            tail = node;
         }
         size++;
     }
@@ -74,20 +76,50 @@ class LinkedList{
             node = node.next;
         }
         System.out.println(node.data);
+        System.out.println("Tail" + tail.data);
     }
+
+    public void rotate(int k){
+        Node current = head;
+        if (current == null || current.next ==null || k == 0) return;
+        k = k % size;
+        if (k == 0) return;
+
+        //connect the tail to the head
+        tail.next = head;
+
+        //find new tail location
+        int tailPosition = size - k - 1;
+        for (int i = 0; i < tailPosition; i++){
+             current = current.next;
+        }
+
+        //set new head and tail
+        head = current.next;
+        current.next = null;
+        tail = current;
+        }
 }
 
 public class MyLinkedList {
     public static void main(String[] args) {
         LinkedList list = new LinkedList();
-        list.insert(28);
-        list.insert(45);
-        list.insert(12);
-        list.insertAtStart(25);
+        list.insert(1);
+        list.insert(2);
+        list.insert(3);
+        list.insert(4);
+        list.insert(5);
 
-        list.insertAt(0, 55);
+        // list.insertAtStart(4);
+        // list.insertAtStart(5);
+        // list.insert(6);
 
-        list.deleteAt(2);
+
+        // list.insertAt(0, 55);
+
+        // list.deleteAt(2);
+        list.rotate(1);
         list.show();
+
     }
 }

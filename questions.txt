@@ -1,0 +1,202 @@
+1. License Plate Validator
+Difficulty: Beginner-Friendly Topics: String Operations, Character Analysis, Validation Rules
+Problem Statement
+A vehicle registration system needs to validate and format license plates from different regions. Create a license plate validator that checks if plates follow proper formatting rules and converts them to a standard format.
+A license plate can be in various formats, but must follow these rules:
+Input Format Rules:
+May optionally start with a region code (2 uppercase letters)
+Must contain exactly 6 alphanumeric characters after the region code
+Can contain spaces, hyphens (-), or underscores (_) as separators
+Must have at least 2 letters and at least 2 digits
+No other special characters allowed
+Validation Rules:
+Character count: Must have exactly 6 alphanumeric characters (after region code)
+Region code: If present, must be exactly 2 uppercase letters
+Separators: Only spaces, hyphens, and underscores allowed
+Letter count: Must have at least 2 letters in the main part
+Digit count: Must have at least 2 digits in the main part
+Case: Letters can be any case in input but must be uppercase in output
+Output Format:
+Valid plates should be formatted as: [REGION-]XXX-XXX (where X is letter or digit)
+If no region code provided, omit it from output
+All letters must be uppercase
+Use hyphen to separate into two groups of 3 characters
+Invalid plates should list specific violations
+Input Format
+The first line contains an integer N (1 ≤ N ≤ 100), the number of license plates to process. The next N lines each contain a single license plate string (1 ≤ length ≤ 30 characters). The input ends when N is zero.
+Output Format
+For each test case, print:
+Line 1: "Case X:" where X is the test case number (starting from 1)
+For each plate: "Plate Y: [formatted plate]" if valid
+"Plate Y: Invalid" if invalid
+If invalid: "Reasons: [list of violations]"
+Violation reasons (check in order):
+"Invalid region code"
+"Wrong character count"
+"Invalid characters"
+"Insufficient letters"
+"Insufficient digits"
+Print a blank line after each test case.
+Sample Input
+ 
+6
+CA-ABC123
+XYZ789
+12-AB34CD
+GH_1A2B3C
+AB-12.34.56
+TX ABC1
+ 
+Sample Output
+ 
+Case 1:
+Plate 1: CA-ABC-123
+Plate 2: XYZ-789
+Plate 3: Invalid
+Reasons: Insufficient letters
+Plate 4: Invalid
+Reasons: Wrong character count
+Plate 5: Invalid
+Reasons: Invalid characters
+Plate 6: TX-ABC-1
+ 
+ 
+ 
+2. Parking Space Allocation
+Topics: Arrays, Sorting, Greedy Algorithms
+Problem Statement
+A parking garage needs to assign vehicles to parking spaces. The garage has N parking spaces, each with a specific size (length in feet). There are M vehicles that need parking, and each vehicle has a known length.
+Your task is to assign vehicles to parking spaces such that:
+Each vehicle is assigned to a space that can accommodate it (space length ≥ vehicle length)
+Each parking space can only be assigned to one vehicle
+You want to maximize the number of vehicles parked
+Among all possible optimal solutions, minimize the total wasted space (sum of unused length across all assigned spaces)
+Input Format
+The first line contains two integers N (1 ≤ N ≤ 1000) and M (1 ≤ M ≤ 1000), representing the number of parking spaces and vehicles respectively.
+The second line contains N pairs of values. Each pair consists of:
+A space identifier (a string of 1-10 characters containing letters and digits, e.g., "A1", "SPOT5", "P23")
+The length of that space in feet (5 ≤ length ≤ 50)
+The third line contains M pairs of values. Each pair consists of:
+A vehicle identifier (a string of 1-10 characters, e.g., "CAR1", "TRUCK", "V42")
+The length of the vehicle in feet (5 ≤ length ≤ 50)
+The input ends when both N and M are zero.
+Output Format
+For each test case, print three lines:
+Line 1: "Case X: Y vehicles parked"
+Line 2: "Total wasted space: Z feet"
+Line 3: "Assignments: [list of assignments]" or "Assignments: none"
+Where:
+X is the test case number (starting from 1)
+Y is the number of vehicles successfully parked
+Z is the total unused space in feet
+Assignments are in the format "VEHICLE->SPACE" sorted by vehicle identifier alphabetically
+Sample Input
+5 5
+A1 20 A2 25 A3 18 B1 30 B2 22
+CAR1 18 CAR2 24 SUV1 16 TRUCK 28 VAN 21
+3 4
+P1 15 P2 20 P3 25
+V1 22 V2 18 V3 14 V4 12
+2 2
+SPOT1 30 SPOT2 40
+BIG 45 SMALL 25
+0 0
+Sample Output
+Case 1: 5 vehicles parked
+Total wasted space: 13 feet
+Assignments: CAR1->A1 CAR2->A2 SUV1->A3 TRUCK->B1 VAN->B2
+Case 2: 3 vehicles parked
+Total wasted space: 8 feet
+Assignments: V2->P2 V3->P1 V4->P3
+Case 3: 1 vehicles parked
+Total wasted space: 15 feet
+Assignments: SMALL->SPOT1
+ 
+Explanation
+Case 1:
+All 5 vehicles can be parked
+SUV1(16)→A3(18): waste=2, CAR1(18)→A1(20): waste=2, VAN(21)→B2(22): waste=1, CAR2(24)→A2(25): waste=1, TRUCK(28)→B1(30): waste=2
+Total waste: 8 feet (recalculate for accurate example)
+Case 2:
+Only 3 spaces for 4 vehicles
+Best assignment to minimize waste while parking maximum vehicles
+Case 3:
+BIG(45) cannot fit in any space
+SMALL(25) fits in SPOT1(30): waste=5
+ 
+3. Employee ID Management System
+Difficulty: Medium Topics: Binary Search Tree (BST), Recursion, Tree Traversal, Linked Structure
+Problem Statement
+A human resources department needs an efficient system to manage employee records. Employees are identified by unique employee ID numbers, and the system must support fast lookups, insertions, and various queries.
+Your task is to implement a system that efficiently handles the following operations:
+REGISTER id salary: Add an employee with the given ID and salary. If the ID already exists, update their salary.
+LOOKUP id: Find an employee by their ID and report their salary.
+RANGE low high: Find all employees with IDs in the range [low, high] (inclusive) and list them in ascending order.
+HEIGHT: Calculate and report the maximum height of your data structure.
+PATH id: Show the navigation path taken to reach a specific employee ID.
+DISPLAY: Show all employees sorted by ID in ascending order.
+Input Format
+The first line contains an integer N (1 ≤ N ≤ 1000), the number of operations. Each of the next N lines contains an operation:
+REGISTER id salary - where id is an integer (1 ≤ id ≤ 1000000) and salary is an integer (1000 ≤ salary ≤ 500000)
+LOOKUP id - where id is an integer
+RANGE low high - where low and high are integers
+HEIGHT - no parameters
+PATH id - where id is an integer
+DISPLAY - no parameters
+The input ends when N is zero.
+Output Format
+For each test case, print:
+"Case X:" where X is the test case number (starting from 1)
+For each operation, print the result:
+REGISTER: "Registered: ID=X, Salary=Y"
+LOOKUP: "Found: ID=X, Salary=Y" or "Not found: ID=X"
+RANGE: "Range [X-Y]: [comma-separated list of IDs]" or "Range [X-Y]: none"
+HEIGHT: "Tree height: H"
+PATH: "Path to X: [comma-separated path of IDs]" or "Path to X: not found"
+DISPLAY: "All employees: [comma-separated list of all IDs]"
+Print a blank line after each test case.
+Sample Input
+10
+REGISTER 50000 75000
+REGISTER 30000 65000
+REGISTER 70000 80000
+REGISTER 20000 55000
+REGISTER 40000 70000
+LOOKUP 30000
+RANGE 25000 45000
+HEIGHT
+PATH 20000
+DISPLAY
+8
+REGISTER 10000 50000
+REGISTER 5000 45000
+REGISTER 15000 60000
+REGISTER 2500 40000
+LOOKUP 20000
+RANGE 5000 15000
+HEIGHT
+DISPLAY
+0
+Sample Output
+Case 1:
+Registered: ID=50000, Salary=75000
+Registered: ID=30000, Salary=65000
+Registered: ID=70000, Salary=80000
+Registered: ID=20000, Salary=55000
+Registered: ID=40000, Salary=70000
+Found: ID=30000, Salary=65000
+Range [25000-45000]: [30000, 40000]
+Tree height: 2
+Path to 20000: [50000, 30000, 20000]
+All employees: [20000, 30000, 40000, 50000, 70000]
+Case 2:
+Registered: ID=10000, Salary=50000
+Registered: ID=5000, Salary=45000
+Registered: ID=15000, Salary=60000
+Registered: ID=2500, Salary=40000
+Not found: ID=20000
+Range [5000-15000]: [5000, 10000, 15000]
+Tree height: 2
+All employees: [2500, 5000, 10000, 15000]
+ 
+ 
