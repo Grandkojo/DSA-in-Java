@@ -137,27 +137,27 @@ public class ParkingSpaceAllocation {
     public static void main(String[] args) {
      
         Map<String, Integer> parkingSlots = new HashMap<>();
-        // parkingSlots.put("A1", 20);    
-        // parkingSlots.put("A2", 25);    
-        // parkingSlots.put("A3", 18);    
-        // parkingSlots.put("B1", 30);    
-        // parkingSlots.put("B2", 22);    
+        parkingSlots.put("A1", 20);    
+        parkingSlots.put("A2", 25);    
+        parkingSlots.put("A3", 18);    
+        parkingSlots.put("B1", 30);    
+        parkingSlots.put("B2", 22);    
 
-        parkingSlots.put("P1", 15);    
-        parkingSlots.put("P2", 20);    
-        parkingSlots.put("P3", 25); 
+        // parkingSlots.put("P1", 15);    
+        // parkingSlots.put("P2", 20);    
+        // parkingSlots.put("P3", 25); 
         
         Map<String, Integer> cars = new HashMap<>();
-        // cars.put("CAR1", 18);
-        // cars.put("CAR2", 24);
-        // cars.put("SUV1", 16);
-        // cars.put("TRUCK", 30);
-        // cars.put("VAN", 21);
+        cars.put("CAR1", 18);
+        cars.put("CAR2", 24);
+        cars.put("SUV1", 16);
+        cars.put("TRUCK", 28);
+        cars.put("VAN", 21);
 
-        cars.put("V1", 22);
-        cars.put("V2", 18);
-        cars.put("V3", 14);
-        cars.put("V4", 12);
+        // cars.put("V1", 22);
+        // cars.put("V2", 18);
+        // cars.put("V3", 14);
+        // cars.put("V4", 12);
         
         String totalNumbers = "3 4";
 
