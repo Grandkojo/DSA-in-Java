@@ -114,8 +114,8 @@ public class ParkingSpaceAllocation {
                 
                 //if waste is positive , smaller than the current smallest
                 if (waste >= 0 && waste < smallestWaste){
-                        smallestWaste = waste;
-                        bestSlot = parkingSlot;
+                    smallestWaste = waste;
+                    bestSlot = parkingSlot;
                 }
                 
             }
