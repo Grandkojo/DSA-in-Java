@@ -73,9 +73,10 @@
 // 0 0
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class ParkingSpaceAllocation {
@@ -84,7 +85,8 @@ public class ParkingSpaceAllocation {
     public static List<String> assignedParkingSlots = new ArrayList<>();
     public static Map<String, String> assignments = new TreeMap<>();
 
-    public static void parkingSpaceAllocation(String totalNumbers, Map<String, Integer> parkingSlots, Map<String, Integer> cars){
+
+    public static void parkingSpaceAllocation(String totalNumbers, List<Map.Entry<String, Integer>> parkingSlots, List<Map.Entry<String, Integer>> cars){
         String[] separatedTotalNumbers = totalNumbers.split(" ");
         int numberofParkingslots = Integer.parseInt(separatedTotalNumbers[0]);
         int numberOfCars = Integer.parseInt(separatedTotalNumbers[1]);
@@ -92,74 +94,82 @@ public class ParkingSpaceAllocation {
         if ((numberOfCars <= 0) || (numberofParkingslots <=0))
             return;
 
-        int currentSmallestFitLength = 0;
         
-        //get each car length, loop through parking lot to find space bigger than car, whiles tracking the smallest of the biggest
-        for (Map.Entry<String, Integer> car : cars.entrySet()) {
-            String currentParkingSlot = new String();
-            // System.out.println("Carrr" + car.getKey() + "=" + car.getValue());
-            for (Map.Entry<String, Integer> parkingSlot : parkingSlots.entrySet()){
-                // System.out.println(parkingSlot.getKey() + "=" + parkingSlot.getValue());
+        //sort the cars and parkingslots list in decending order
+        Collections.sort(cars, Map.Entry.<String, Integer>comparingByValue().reversed());
+        Collections.sort(parkingSlots, Map.Entry.<String, Integer>comparingByValue().reversed());
         
-                //if slot is bigger than car but bigger than the current slot bigger than the car, used the smaller
-                if (parkingSlot.getValue() >= car.getValue()){
-                    if (!(currentSmallestFitLength >= car.getValue() && parkingSlot.getValue() > currentSmallestFitLength)){
-                        //if the parking slot has not been assigned already
-                        if (!assignedParkingSlots.contains(parkingSlot.getKey())){
-                            assignedParkingSlots.add(parkingSlot.getKey());
-                            currentParkingSlot = parkingSlot.getKey();
-                            currentSmallestFitLength = parkingSlot.getValue();
-                        }
-                    } 
-                    
+        System.out.println(cars.toString());
+        System.out.println(parkingSlots.toString());
+        System.out.println();
+        
+        for(Entry<String, Integer> car: cars){
+            
+            int smallestWaste = Integer.MAX_VALUE;
+            Entry<String,Integer> bestSlot = null;
+
+            for(Entry<String, Integer> parkingSlot : parkingSlots){
+
+                int waste = (parkingSlot.getValue() - car.getValue());
+                
+                //if waste is positive , smaller than the current smallest
+                if (waste >= 0 && waste < smallestWaste){
+                        smallestWaste = waste;
+                        bestSlot = parkingSlot;
                 }
                 
             }
-            //increment parked cars, total wasted space and the car assignment to the parking slot
-            if (!currentParkingSlot.isEmpty()){
-                totalCarsParked++;
-                totalWastedSpace += currentSmallestFitLength - car.getValue();
-                assignments.put(car.getKey(), currentParkingSlot);
-                // assignments.add(car.getKey() + "->" + currentParkingSlot);
-            } 
             
-            // System.out.println("Right slot: " + currentParkingSlot);
-            // break;
-        }
+            //if smallest of smallest of slots that could fit the car is found, assign the slot and mark that slot as unavailable
+            if (bestSlot != null){
+                assignedParkingSlots.add(bestSlot.getKey());
+                assignments.put(car.getKey(), bestSlot.getKey());
+                parkingSlots.remove(bestSlot);
+                totalCarsParked++;
+                totalWastedSpace += smallestWaste;
+
+            }  else {
+                System.out.println("No spot found for " + car.getKey());
+            }
+
+
+        }        
+
         System.out.println(totalCarsParked + " vehicles parked ");
         System.out.println("Total Wasted Space: "+ totalWastedSpace + " feet");
         System.out.print("Assignments: [ ");
         assignments.forEach((key, value) -> System.out.print(key + " -> " + value + " "));
         System.out.print("]");
+        System.out.println();
 
     }       
 
     public static void main(String[] args) {
      
-        Map<String, Integer> parkingSlots = new HashMap<>();
-        parkingSlots.put("A1", 20);    
-        parkingSlots.put("A2", 25);    
-        parkingSlots.put("A3", 18);    
-        parkingSlots.put("B1", 30);    
-        parkingSlots.put("B2", 22);    
+        List<Map.Entry<String, Integer>> parkingSlots = new ArrayList<>();
+        parkingSlots.add(Map.entry("A1", 20));    
+        parkingSlots.add(Map.entry("A2", 25));    
+        // parkingSlots.add(Map.entry("A3", 18));    
+        parkingSlots.add(Map.entry("B1", 30));    
+        // parkingSlots.add(Map.entry("B2", 22));    
 
         // parkingSlots.put("P1", 15);    
         // parkingSlots.put("P2", 20);    
         // parkingSlots.put("P3", 25); 
         
-        Map<String, Integer> cars = new HashMap<>();
-        cars.put("CAR1", 18);
-        cars.put("CAR2", 24);
-        cars.put("SUV1", 16);
-        cars.put("TRUCK", 28);
-        cars.put("VAN", 21);
+        List<Map.Entry<String, Integer>>  cars = new ArrayList<>();
+        cars.add(Map.entry("CAR1", 18));
+        cars.add(Map.entry("CAR2", 24));
+        // cars.add(Map.entry("SUV1", 16));
+        // cars.add(Map.entry("TRUCK", 28));
+        // cars.add(Map.entry("VAN", 21));
 
         // cars.put("V1", 22);
         // cars.put("V2", 18);
         // cars.put("V3", 14);
         // cars.put("V4", 12);
         
-        String totalNumbers = "3 4";
+        String totalNumbers = "5 5";
 
         parkingSpaceAllocation(totalNumbers, parkingSlots, cars);
     }
